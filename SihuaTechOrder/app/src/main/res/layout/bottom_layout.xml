@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:background="@drawable/bottom_bar"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/id_tab_01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="附近"
+        android:background="#00000000"
+        android:clickable="true"
+        android:layout_weight="1"
+        android:layout_marginLeft="40dp"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+
+        android:drawableLeft="@drawable/guide_map_moren_hl"/>
+    <TextView
+        android:id="@+id/id_tab_02"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="天气"
+        android:background="#00000000"
+        android:clickable="true"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+
+        android:drawableLeft="@drawable/tab_weather_selected"/>
+    <TextView
+        android:id="@+id/id_tab_03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="我的"
+        android:background="#00000000"
+        android:clickable="true"
+        android:layout_weight="1"
+
+        android:gravity="center_vertical"
+        android:layout_gravity="center_vertical"
+
+        android:drawableLeft="@drawable/main_mine"/>
+
+
+
+</LinearLayout>
