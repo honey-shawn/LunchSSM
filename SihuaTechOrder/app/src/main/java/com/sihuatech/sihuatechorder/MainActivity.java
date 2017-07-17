@@ -10,6 +10,7 @@ import android.widget.TextView;
 public class MainActivity extends ActivityGroup {
     private TextView tab_img01;
     private TextView tab_img02;
+    private TextView tab_img03;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class MainActivity extends ActivityGroup {
         });
 
         // 模块3
-        TextView tab_img03 = (TextView) findViewById(R.id.id_tab_03);
+        tab_img03 = (TextView) findViewById(R.id.id_tab_03);
         tab_img03.setOnClickListener(new View.OnClickListener() {
 
             @Override
