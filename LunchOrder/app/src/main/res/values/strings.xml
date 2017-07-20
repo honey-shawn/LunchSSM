@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">思华外卖</string>
+    <string name="title_activity_tab01">Tab01Activity</string>
+    <string name="title_activity_relation">RelationActivity</string>
+    <string name="title_activity_relation_select">RelationSelectActivity</string>
+    <string name="title_activity_relation_detail">RelationDetailActivity</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="#000000" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="饿了么"
+            android:layout_centerVertical="true"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+        <ImageButton
+            android:id="@+id/book_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_add"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="1.运费"
+        android:layout_margin="4dp"
+        android:padding="4dp"
+        android:background="#ffffff"
+        android:inputType="number"
+        android:id="@+id/et_freight"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="2.满减免"
+        android:inputType="number"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:background="#ffffff"
+        android:id="@+id/et_free"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="3.红包"
+        android:inputType="number"
+        android:padding="4dp"
+        android:layout_margin="4dp"
+        android:background="#ffffff"
+        android:id="@+id/et_gift"/>
+
+    <ListView
+        android:id="@+id/RelationListView"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>
