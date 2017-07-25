@@ -11,6 +11,16 @@
 			enable = 1
 		</where>
 	</select>
+	
+	<!-- 清单：查出所有菜信息,包含名字和菜名 -->
+	<select id="selectAllWrapper" resultType="com.sihuatech.po.RelationWrapper">
+		SELECT relation.id,relation.enable,menu_id AS menuId,person_id AS
+		personId,time,price_end AS priceEnd,person.`name` AS personName,menu.`name` AS menuName
+		FROM relation,person,menu
+		<where>
+			relation.enable = 1 AND person.id = relation.person_id AND menu.id = relation.menu_id
+		</where>
+	</select>
 
 	<!-- 修改菜信息,包含逻辑删除 -->
 	<update id="updateById" parameterType="com.sihuatech.po.Relation">

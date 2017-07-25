@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sihuatech.mapper.RelationMapper;
 import com.sihuatech.po.Relation;
+import com.sihuatech.po.RelationWrapper;
 import com.sihuatech.service.RelationService;
 
 public class RelationServiceImpl implements RelationService{
@@ -32,6 +33,18 @@ public class RelationServiceImpl implements RelationService{
 	public int updateById(Relation record) {
 		return relationMapper.updateById(record);
 	}
+
+	@Override
+	public List<RelationWrapper> selectAllWrapper() {
+		return relationMapper.selectAllWrapper();
+	}
+
+	/*@Override
+	public void addRelationList(List<Relation> relationList) {
+		for(Relation relation : relationList){
+			relationMapper.addRelation(relation);
+		}
+	}*/
 
 
 }

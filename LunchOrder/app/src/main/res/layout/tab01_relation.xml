@@ -6,6 +6,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:background="#000000" >
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +31,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="1.运费"
+        android:hint="运费*"
+        android:text="2"
         android:layout_margin="4dp"
         android:padding="4dp"
         android:background="#ffffff"
@@ -38,7 +41,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="2.满减免"
+        android:hint="满减免*"
         android:inputType="number"
         android:padding="4dp"
         android:layout_margin="4dp"
@@ -47,7 +50,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="3.红包"
+        android:hint="红包"
         android:inputType="number"
         android:padding="4dp"
         android:layout_margin="4dp"
@@ -56,8 +59,8 @@
 
     <ListView
         android:id="@+id/RelationListView"
-        android:divider="@null"
-        android:dividerHeight="0dp"
+        android:divider="#cccccc"
+        android:dividerHeight="1dp"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:layout_width="match_parent"

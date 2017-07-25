@@ -30,19 +30,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import static android.R.id.list;
 
 public class RelationSelectActivity extends Activity {
-    private String url = "http://10.0.2.2:8080/LunchSSM/person/detail";
-    private ListView personListView;
+    private String url = "http://10.0.2.2:8080/LunchSSM/menu/detail";
+    private ListView menuListView;
     ArrayList<HashMap<String, Object>> mylist;
     JSONObject jsonObject;
     JSONArray jsonArray;//返回的json数组
-    List<String> list = new ArrayList<String>();//存储选中的数据
-    String menuId;//菜名id
-    String menuName;//菜名
-    JSONArray bookedPerson;//已点当前菜的人员
+    //TODO youwenti
+    List<ArrayList<String>> list = new ArrayList<ArrayList<String>>();//存储选中的数据
+    String personId;//人名id
+    String personName;//人名
+    JSONArray bookedMenu;//当前已点的菜
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,36 +56,24 @@ public class RelationSelectActivity extends Activity {
     }
 
     private void init() {
-        menuId = getIntent().getStringExtra("id");
-        menuName = getIntent().getStringExtra("name");
-        String persons = getIntent().getStringExtra("booked");
-        if(persons!=null){
-            Log.i("点此餐的人员：",persons);
+        personId = getIntent().getStringExtra("id");
+        personName = getIntent().getStringExtra("name");
+        String menus = getIntent().getStringExtra("booked");
+        if(menus!=null){
+            Log.i("此人已点的菜单：",menus);
             try {
-                bookedPerson = new JSONArray(persons);
-                Log.i("array:",bookedPerson.toString());
+                bookedMenu = new JSONArray(menus);
+                Log.i("array:",bookedMenu.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
         jsonObject = new JSONObject();
         jsonArray = new JSONArray();
-        personListView = (ListView) findViewById(R.id.SelectListView);
+        menuListView = (ListView) findViewById(R.id.SelectListView);
         mylist = new ArrayList<HashMap<String, Object>>();;
     }
 
-    /*class MyItemClick implements AdapterView.OnItemClickListener{
-
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            HashMap<String, Object> map = mylist.get(position);
-            Object name = map.get("name");
-            Object personId = map.get("id");
-            Log.i("name",name.toString());
-            
-
-        }
-    }*/
 
     class InitListView extends AsyncTask<String,Void,String> {
         @Override
@@ -112,21 +102,12 @@ public class RelationSelectActivity extends Activity {
                     HashMap<String, Object> map = new HashMap<String, Object>();
                     map.put("name", tmp.get("name").toString());
                     map.put("id", tmp.get("id").toString());
+                    map.put("price", tmp.get("price").toString());
                     mylist.add(map);
                 }
-                //生成适配器，数组===》ListItem
-                /*SimpleAdapter mSchedule = new SimpleAdapter(RelationSelectActivity.this, //没什么解释
-                        mylist,//数据来源
-                        R.layout.tab01_relation_select_item,//ListItem的XML实现
-
-                        //动态数组与ListItem对应的子项
-                        new String[] {"name"},
-
-                        //ListItem的XML文件里面的两个TextView ID
-                        new int[] {R.id.selectItemText});*/
                 MyAdapter myAdapter = new MyAdapter(RelationSelectActivity.this,mylist);
                 //添加并且显示
-                personListView.setAdapter(myAdapter);
+                menuListView.setAdapter(myAdapter);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -138,6 +119,7 @@ public class RelationSelectActivity extends Activity {
     static class ViewHolder
     {
         public TextView name;
+        public TextView price;
         public CheckBox checkBoxSelect;
     }
 
@@ -182,6 +164,8 @@ public class RelationSelectActivity extends Activity {
                 //根据自定义的Item布局加载布局
                 convertView = mInflater.inflate(R.layout.tab01_relation_select_item, null);
                 holder.name = (TextView)convertView.findViewById(R.id.selectItemText);
+                holder.price = (TextView)convertView.findViewById(R.id.selectItemPrice);
+
                 holder.checkBoxSelect = (CheckBox) convertView.findViewById(R.id.checkBoxSelect);
                 //将设置好的布局保存到缓存中，并将其设置在Tag里，以便后面方便取出Tag
                 convertView.setTag(holder);
@@ -190,14 +174,23 @@ public class RelationSelectActivity extends Activity {
             }
 
             holder.name.setText((String)data.get(position).get("name"));
-            //将已选的人员复位
-            if(bookedPerson!=null){
-                String personId = (String)data.get(position).get("id");
-                for(int i=0;i<bookedPerson.length();i++){
+            holder.price.setText((String)data.get(position).get("price"));
+            //将已选的菜单复位
+            if(bookedMenu!=null){
+                String menuId = (String)data.get(position).get("id");
+                String menuPrice = (String)data.get(position).get("price");
+                String menuName = data.get(position).get("name").toString();
+                for(int i=0;i<bookedMenu.length();i++){
                     try {
-                        if(bookedPerson.get(i).equals(personId)){
+                        JSONArray tmp = new JSONArray(bookedMenu.get(i).toString());
+//                        Log.i("tmp",tmp.toString());
+                        if(tmp.get(0).equals(menuId)){
+                            ArrayList<String> tmp_list = new ArrayList<String>();
                             holder.checkBoxSelect.setChecked(true);
-                            list.add(personId);
+                            tmp_list.add(menuId);
+                            tmp_list.add(menuPrice);
+                            tmp_list.add(menuName);
+                            list.add(tmp_list);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -210,17 +203,31 @@ public class RelationSelectActivity extends Activity {
                     Log.d("data", "发生变化" + isChecked);
                     JSONObject jsonObject;
                     int i= 0;
-                    String personId = data.get(position).get("id").toString();
-                    String personName = data.get(position).get("name").toString();
+                    String menuId = data.get(position).get("id").toString();
+                    String menuName = data.get(position).get("name").toString();
+                    String menuPrice = data.get(position).get("price").toString();
+                    ArrayList< String> tmp_list = new ArrayList< String>();
                     if(isChecked) {
-                        list.add(personId);
-                        Log.i("id:-------------",personId);
-                        Log.i("add:-------------",personName);
-                        Log.i("list------",list.toString());
+                        tmp_list.add(menuId);
+                        tmp_list.add(menuPrice);
+                        tmp_list.add(menuName);
+                        list.add(tmp_list);
+                        Log.i("add list------",list.toString());
                     }else if(!isChecked){
-                        Log.i("remove:-------------",personName);
-                        list.remove(list.indexOf(personId));
-                        Log.i("list------",list.toString());
+                        Log.i("removing list------",list.toString());
+                        for(ArrayList<String> tmp : list){
+                            Log.i("remove:-------------",tmp.toString());
+                            for(String str : tmp){
+                                if(str.equals(menuId)){
+                                    int index = list.indexOf(tmp);
+                                    Log.i("index:",index+"");
+                                    Log.i("tmp",tmp.toString());
+                                    list.remove(index);
+                                }
+                            }
+                        }
+//                        list.remove(list.indexOf(menuId));
+                        Log.i("removed list------",list.toString());
                     }
 
                 }
@@ -233,7 +240,6 @@ public class RelationSelectActivity extends Activity {
    /* @Override
     public void onBackPressed() {
         super.onBackPressed();
-        //TODO
         Intent intent = new Intent();
         intent.putExtra("relation", "first");
         setResult(RelationActivity.RESULT_OK, intent);
@@ -246,13 +252,24 @@ public class RelationSelectActivity extends Activity {
         if(keyCode==KeyEvent.KEYCODE_BACK){
             Intent intent = new Intent();
             try {
-                for(String str : list){
-                    jsonArray.put(str);
+                if(list.size()==0){
+                    Log.i("当前人名：",personName+"没有点餐！");
+//                    intent.putExtra("relation", "");
+                }else{
+                    for(List<String> tmp_list : list){
+//                    Log.i("tmp_list:",tmp_list.toString());
+                        JSONArray tmp = new JSONArray();
+                        for(String str : tmp_list){
+//                        Log.i("str:",str);
+                            tmp.put(str);
+                        }
+                        jsonArray.put(tmp);
+                    }
+                    jsonObject.put(personId,jsonArray);
+                    Log.i("当前人名：",personName);
+                    intent.putExtra("relation", jsonObject.toString());
                 }
-                jsonObject.put(menuId,jsonArray);
-                Log.i("当前菜名：",menuName);
-                intent.putExtra("relation", jsonObject.toString());
-                setResult(RelationActivity.RESULT_OK, intent);
+                setResult(RelationActivity.RESULT_OK_Select, intent);
                 RelationSelectActivity.this.finish();
             } catch (JSONException e) {
                 e.printStackTrace();

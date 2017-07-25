@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
     android:id="@+id/personListItem"
+    android:background="#ffffff"
     android:paddingBottom="3dip"
     android:paddingLeft="10dip">
     <ImageView
@@ -20,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:id="@+id/personItemTitle"
-            android:textSize="30dip">
+            android:textSize="20dip">
         </TextView>
         <TextView
             android:layout_height="wrap_content"

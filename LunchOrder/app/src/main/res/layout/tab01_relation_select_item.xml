@@ -5,19 +5,28 @@
     android:orientation="horizontal"
     android:layout_height="wrap_content"
     android:paddingBottom="3dip"
-    android:paddingLeft="10dip">
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:textSize="20dp"
-            android:layout_weight="4"
-            android:id="@+id/selectItemText">
-        </TextView>
+    android:background="#ffffff"
+    android:paddingLeft="10dip"
+    android:weightSum="1">
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:layout_weight="1"
+        android:id="@+id/selectItemText">
+    </TextView>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:layout_weight="4"
+        android:id="@+id/selectItemPrice">
+    </TextView>
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:layout_weight="1"
         android:layout_marginRight="10dp"
-        android:id="@+id/checkBoxSelect"/>
+        android:id="@+id/checkBoxSelect" />
 
 </LinearLayout>

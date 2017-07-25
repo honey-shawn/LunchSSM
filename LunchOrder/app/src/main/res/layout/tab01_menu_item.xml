@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/menuListItem"
     android:descendantFocusability="blocksDescendants"
+    android:background="#ffffff"
     android:paddingBottom="3dip"
     android:paddingLeft="10dip">
     <ImageView

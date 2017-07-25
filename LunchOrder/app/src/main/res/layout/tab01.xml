@@ -21,92 +21,110 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="#ffffff">
+                android:background="#ffffff"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_menu"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:drawableTop="@drawable/tab_settings_normal"
                         android:gravity="center"
-                        android:layout_weight="1"
                         android:text="菜单" />
+
                     <TextView
                         android:id="@+id/tv_person"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:drawableTop="@drawable/tab_settings_normal"
                         android:gravity="center"
-                        android:layout_weight="1"
                         android:text="人员" />
+
                     <TextView
                         android:id="@+id/tv_relation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:drawableTop="@drawable/tab_settings_normal"
                         android:gravity="center"
-                        android:layout_weight="1"
                         android:text="点餐" />
                 </LinearLayout>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="10dp"
-                android:background="#ffffff">
+                android:background="#ffffff"
+                android:orientation="vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
                     android:text="今日霸王餐："
-                    android:layout_margin="4dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:visibility="gone"/>
+
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="无"
                         android:layout_gravity="center_horizontal"
-                        android:layout_margin="4dp"/>
-                </LinearLayout>
+                        android:layout_margin="4dp"
+                        android:text="无"
+                        android:visibility="gone" />
+
+                    <ListView
+                        android:id="@+id/relationDailyNoListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:divider="#cccccc"
+                        android:visibility="gone"
+                        android:dividerHeight="1dp" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_margin="4dp"
                     android:background="#cccccc"></View>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="本周霸王餐："
-                    android:layout_margin="4dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="4dp">
+                    android:layout_margin="4dp"
+                    android:text="本周霸王餐：" />
+
+
                     <TextView
+                        android:id="@+id/tv_nullNotification"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="无"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginTop="4dp"
-                        android:layout_marginBottom="8dp"/>
-            </LinearLayout>
+                        android:text="无"
+                        android:visibility="gone" />
 
-        </LinearLayout>
+                    <ListView
+                        android:id="@+id/relationWeeklyNoListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="124dp"
+                        android:divider="#cccccc"
+                        android:dividerHeight="1dp" />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

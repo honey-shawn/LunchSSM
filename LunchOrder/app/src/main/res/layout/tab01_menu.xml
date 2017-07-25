@@ -37,8 +37,8 @@
 
         <ListView
             android:id="@+id/MenuListView"
-            android:divider="@null"
-            android:dividerHeight="0dp"
+            android:divider="#cccccc"
+            android:dividerHeight="1dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:layout_width="match_parent"

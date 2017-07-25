@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:background="#FFFFFF"
     android:paddingBottom="3dip"
     android:paddingLeft="10dip"
     android:orientation="horizontal">
@@ -26,6 +27,13 @@
         android:textSize="20dp"
         android:layout_weight="1"
         android:id="@+id/detailPrice">
+    </TextView>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:textSize="20dp"
+        android:layout_weight="1"
+        android:id="@+id/detailPriceEnd">
     </TextView>
 
 </LinearLayout>
