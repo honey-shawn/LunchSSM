@@ -35,7 +35,7 @@ public class RelationController {
 	@Autowired
 	private RelationService relationService;
 
-	// 所有菜清单
+	// 所有清单
 	@RequestMapping("/detail")
 	@ResponseBody
 	public Map<String, Object> detail() {
@@ -63,12 +63,11 @@ public class RelationController {
 		return maplist;
 	}
 
-	// 新增菜单：Object的方式
+	// 新增
 	@SuppressWarnings("deprecation")
 	@RequestMapping(value = "/add", method = { RequestMethod.POST })
 	public void addMenu(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		request.setCharacterEncoding("UTF-8");
-		
 		String content = Tools.getBodyData(request);//获取实体
 		System.out.println("--------------\n"+content);
 		JSONArray jsonArray = JSON.parseArray(content);
@@ -83,18 +82,9 @@ public class RelationController {
 			relation.setTime(new Date(time));
 			relationService.addRelation(relation);
 		}
-		
 	}
-	
-	
 	
 	/*
-	 //TODO 新增点餐
-	@RequestMapping(value = "/add1", method = { RequestMethod.POST })
-	public void add(@ModelAttribute("data") List<Relation> relationList) throws Exception {
-		System.out.println("客户端介入了。。。。。");
-	}
-	
 	@RequestMapping(value = "/add2", method = { RequestMethod.POST })
 	@ResponseBody      //这边是返回json格式数据
     public String createOrder(@RequestBody String requestBody) throws Exception {
@@ -119,9 +109,26 @@ public class RelationController {
 		return map;
 	}
 
-	// TODO 测试 修改菜单：包含逻辑删除
+/*	
 	@RequestMapping(value = "/updateById", method = RequestMethod.POST)
-	public int updateById(@ModelAttribute("relation") Relation relation) {
+	public int updateById( Relation relation) {
+//		request.setCharacterEncoding("UTF-8");
+//		String content = Tools.getBodyData(request);//获取实体
+		System.out.println(relation.getId());
 		return relationService.updateById(relation);
-	}
+	}*/
+	
+	// 测试 修改菜单：包含逻辑删除
+		@SuppressWarnings("deprecation")
+		@RequestMapping(value = "/updateById", method = { RequestMethod.POST })
+		public void updateById(HttpServletRequest request, HttpServletResponse response) throws Exception {
+			request.setCharacterEncoding("UTF-8");
+			String content = Tools.getBodyData(request);//获取实体
+			System.out.println("--------------\n"+content);
+			JSONObject jsonObject = JSON.parseObject(content);
+			Relation relation = new Relation();
+			relation.setId(Integer.parseInt(jsonObject.get("id").toString()));
+			relation.setEnable(0);
+			relationService.updateById(relation);
+		}
 }
