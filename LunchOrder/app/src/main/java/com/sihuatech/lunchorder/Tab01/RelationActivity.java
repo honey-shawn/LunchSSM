@@ -16,6 +16,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.sihuatech.lunchorder.R;
+import com.sihuatech.lunchorder.util.Contants;
 import com.sihuatech.lunchorder.util.MyHttpConnect;
 
 import org.json.JSONArray;
@@ -35,7 +36,7 @@ public class RelationActivity extends Activity {
     public final static int RESULT_OK_Detail = 201;//返回码:从订单详情页返回
 
     public final static int RESULT_REQUEST = 1;//请求码
-    private String url = "http://10.0.2.2:8080/LunchSSM/person/detail";
+    private String url = Contants.base_url + "/person/detail";
     private ListView personListView;
     ArrayList<HashMap<String, Object>> mylist;
     JSONObject jsonObject;//最终返回的json订餐结果
@@ -201,37 +202,45 @@ public class RelationActivity extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             //请求数据完毕，更新UI
-            try {
-                personJson = new JSONObject(result);
-                Iterator<String> iterator = personJson.keys();
-                while (iterator.hasNext()) {
-                    String keyId = iterator.next();
+            Log.i("-----------------",result);
+                if(result.equals("ClientProtocolException")){
+                    Toast.makeText(RelationActivity.this,"ClientProtocolException",Toast.LENGTH_LONG).show();
+                }else if(result.equals("IOException")){
+                    Toast.makeText(RelationActivity.this,"IOException",Toast.LENGTH_LONG).show();
+                }else{
+                    try {
+                        personJson = new JSONObject(result);
+                        Iterator<String> iterator = personJson.keys();
+                        while (iterator.hasNext()) {
+                            String keyId = iterator.next();
 //                    System.out.println("============"+keyId);
-                    JSONObject tmp = (JSONObject) (personJson.get(keyId));
-                    HashMap<String, Object> map = new HashMap<String, Object>();
-                    map.put("img", R.drawable.tab_address_pressed);
-                    map.put("name", tmp.get("name").toString());
+                            JSONObject tmp = (JSONObject) (personJson.get(keyId));
+                            HashMap<String, Object> map = new HashMap<String, Object>();
+                            map.put("img", R.drawable.tab_address_pressed);
+                            map.put("name", tmp.get("name").toString());
 //                    map.put("price", tmp.get("price").toString());
-                    map.put("id", tmp.get("id").toString());
-                    mylist.add(map);
+                            map.put("id", tmp.get("id").toString());
+                            mylist.add(map);
+                        }
+                        //生成适配器，数组===》ListItem
+                        SimpleAdapter mSchedule = new SimpleAdapter(RelationActivity.this, //没什么解释
+                                mylist,//数据来源
+                                R.layout.tab01_person_item,//ListItem的XML实现
+
+                                //动态数组与ListItem对应的子项
+                                new String[]{"img", "name"},
+
+                                //ListItem的XML文件里面的两个TextView ID
+                                new int[]{R.id.img_person, R.id.personItemTitle/*,R.id.personItemText*/});
+                        //添加并且显示
+                        personListView.setAdapter(mSchedule);
+                        personListView.setOnItemClickListener(new MyItemClick());
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-                //生成适配器，数组===》ListItem
-                SimpleAdapter mSchedule = new SimpleAdapter(RelationActivity.this, //没什么解释
-                        mylist,//数据来源
-                        R.layout.tab01_person_item,//ListItem的XML实现
 
-                        //动态数组与ListItem对应的子项
-                        new String[]{"img", "name"},
-
-                        //ListItem的XML文件里面的两个TextView ID
-                        new int[]{R.id.img_person, R.id.personItemTitle/*,R.id.personItemText*/});
-                //添加并且显示
-                personListView.setAdapter(mSchedule);
-                personListView.setOnItemClickListener(new MyItemClick());
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
 
         }
     }

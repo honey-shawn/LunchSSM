@@ -15,6 +15,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.sihuatech.lunchorder.R;
+import com.sihuatech.lunchorder.util.Contants;
 import com.sihuatech.lunchorder.util.MyHttpConnect;
 
 import org.json.JSONArray;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class RelationDetailActivity extends Activity {
     private ImageButton send_OK;
-    private String url = "http://10.0.2.2:8080/LunchSSM/relation/add";
+    private String url = Contants.base_url + "/relation/add";
     String params;//http传递的实体内容
     private ListView relationDetailListView;
     ArrayList<HashMap<String, String>> mylist;

@@ -133,7 +133,7 @@ public class MyHttpConnect {
                 Log.d("Common", msg);
                 return msg;
             }
-            return "fail";
+            return "finish";
         }catch(Exception e){
             e.printStackTrace();
             return "error";

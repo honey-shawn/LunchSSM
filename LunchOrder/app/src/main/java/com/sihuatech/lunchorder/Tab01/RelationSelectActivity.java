@@ -20,6 +20,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.sihuatech.lunchorder.R;
+import com.sihuatech.lunchorder.util.Contants;
 import com.sihuatech.lunchorder.util.MyHttpConnect;
 
 import org.json.JSONArray;
@@ -35,7 +36,7 @@ import java.util.Map;
 import static android.R.id.list;
 
 public class RelationSelectActivity extends Activity {
-    private String url = "http://10.0.2.2:8080/LunchSSM/menu/detail";
+    private String url = Contants.base_url + "/menu/detail";
     private ListView menuListView;
     ArrayList<HashMap<String, Object>> mylist;
     JSONObject jsonObject;

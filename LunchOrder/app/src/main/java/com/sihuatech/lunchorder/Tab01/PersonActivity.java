@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.sihuatech.lunchorder.R;
+import com.sihuatech.lunchorder.util.Contants;
 import com.sihuatech.lunchorder.util.MyHttpConnect;
 
 import org.json.JSONException;
@@ -21,7 +22,7 @@ import java.util.Iterator;
 import static android.R.id.list;
 
 public class PersonActivity extends Activity {
-    private String url = "http://10.0.2.2:8080/LunchSSM/person/detail";
+    private String url = Contants.base_url + "/person/detail";
     private ListView personListView;
     ArrayList<HashMap<String, Object>> mylist;
 

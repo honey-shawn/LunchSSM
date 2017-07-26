@@ -1,8 +1,13 @@
 package com.sihuatech.lunchorder.Tab01;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +19,11 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sihuatech.lunchorder.MainActivity;
 import com.sihuatech.lunchorder.R;
+import com.sihuatech.lunchorder.util.Contants;
 import com.sihuatech.lunchorder.util.MyHttpConnect;
 import com.sihuatech.lunchorder.util.Tools;
 
@@ -39,6 +46,10 @@ import static android.R.attr.start;
  */
 
 public class TabOne {
+    String dailyUrl = Contants.base_url + "/relation/detail";
+    String weekUrl = Contants.base_url + "/relation/detail";
+    String relationUrl = Contants.base_url + "/relation/updateById";
+
     private Context context;
     private TextView tv_menu;
     private TextView tv_person;
@@ -50,8 +61,8 @@ public class TabOne {
     ArrayList<HashMap<String, String>> dailylist;
     ArrayList<HashMap<String, String>> weeklist;
 
-    String dailyUrl = "http://10.0.2.2:8080/LunchSSM/relation/detail";//TODO
-    String weekUrl = "http://10.0.2.2:8080/LunchSSM/relation/detail";//TODO
+
+    String content;
 
     public TabOne(Context context){
         this.context = context;
@@ -68,7 +79,7 @@ public class TabOne {
         setListener(tv_menu,cls0);
         setListener(tv_person,cls1);
         setListener(tv_relation,cls2);
-        new DailyInitListView().execute(dailyUrl);
+//        new DailyInitListView().execute(dailyUrl);
         new WeekInitListView().execute(weekUrl);
     }
     public void setListener(View view, final Class<?> cls){
@@ -85,19 +96,90 @@ public class TabOne {
     class MyItemClick implements AdapterView.OnItemClickListener {
         ArrayList<HashMap<String, String>> mylist;
         public MyItemClick(ArrayList<HashMap<String, String>> mylist){
-            mylist = this.mylist;
+            this.mylist = mylist;
         }
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             HashMap<String, String> map = mylist.get(position);
-//            String relationId = map.get("id");
-            //TODO 对话框提示删除
-            Log.i("点击了。。。：",map.get("menuName"));
+            showNormalDialog(map);//显示对话框
+
             /*Intent intent = new Intent(context, RelationSelectActivity.class);
             startActivityForResult(intent, RESULT_REQUEST);*/
         }
     }
+
+    private void showNormalDialog(final HashMap<String, String> map){
+        /* @setIcon 设置对话框图标
+         * @setTitle 设置对话框标题
+         * @setMessage 设置对话框消息提示
+         * setXXX方法返回Dialog对象，因此可以链式设置属性
+         */
+        final AlertDialog.Builder normalDialog = new AlertDialog.Builder(context);
+        normalDialog.setIcon(R.drawable.ic_launcher);
+        normalDialog.setTitle("收款确认");
+        normalDialog.setMessage(map.get("personName")+"："+map.get("menuName")+",应付："+map.get("priceEnd"));
+        normalDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i("确认收款信息：","menu:"+map.get("menuName")+"person"+map.get("personName")+"price:"+map.get("priceEnd"));
+                        try {
+                            String relationId = map.get("id");
+                            JSONObject info = new JSONObject();
+                            info.put("id",relationId);
+                            info.put("enable","0");
+                            content = info.toString();
+                            new Thread(networkTask).start();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        normalDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.i("cancel","你选择了取消。");
+                    }
+                });
+        // 显示
+        normalDialog.show();
+    }
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String val = data.getString("value");
+            Log.i("mylog", "请求结果为-->" + val);
+            if(val.equals("200")){
+                Toast.makeText(context,"提交成功！",Toast.LENGTH_SHORT);
+                new WeekInitListView().execute(weekUrl);//TODO 重新加载数据
+
+            }else{
+                Toast.makeText(context,"提交失败，注意检查网络！",Toast.LENGTH_LONG);
+            }
+            // UI界面的更新等相关操作
+        }
+    };
+
+    /**
+     * 网络操作相关的子线程
+     */
+    Runnable networkTask = new Runnable() {
+
+        @Override
+        public void run() {
+            int status = MyHttpConnect.httpPostRequest(relationUrl,content);
+            // 在这里进行 http request.网络请求相关操作
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putString("value", status+"");
+            msg.setData(data);
+            handler.sendMessage(msg);
+        }
+    };
 
     //加载数据
     class DailyInitListView extends AsyncTask<String,Void,String> {
@@ -174,13 +256,10 @@ public class TabOne {
                 map.put("id", tmp.get("id").toString());
                 map.put("menuName", tmp.get("menuName").toString());
                 map.put("priceEnd", tmp.get("priceEnd").toString());
-                //TODO 时间需要处理,改成周几
                 Long time = Long.parseLong(tmp.get("time").toString());
                 Date date = new Date(time);
                 String week_cn = Tools.changeToWeek(date.getDay());
-                Log.i("周几：",week_cn);
-
-                map.put("time", week_cn);//
+                map.put("time", week_cn);
                 list.add(map);
             }
 
